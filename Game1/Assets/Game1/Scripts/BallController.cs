@@ -25,13 +25,14 @@ public class BallController : MonoBehaviour
             Vector3 dir;
 
             Vector3 normalized = ballRigidbody.velocity.normalized;
-            
+            Debug.Log(normalized);
+
             if (Math.Round(normalized.z) == 1) dir = left;
             else dir = right;
 
-            Debug.Log("dir : " + dir);
-
             ballRigidbody.velocity = Vector3.zero;
+            ballRigidbody.angularVelocity = Vector3.zero;   // 각속도 벡터
+
             ballRigidbody.AddForce(dir * speed);
         }
     }
