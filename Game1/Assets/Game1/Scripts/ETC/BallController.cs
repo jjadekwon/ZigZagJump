@@ -6,16 +6,18 @@ using UnityEngine;
 public class BallController : MonoBehaviour
 {
     Rigidbody ballRigidbody;
-    float speed = 150f;
+    public float speed = 10f;
 
     Vector3 left = new Vector3(-1, 0, 0);
     Vector3 right = new Vector3(0, 0, 1);
+
+    public Vector3 startDir;
 
     // Start is called before the first frame update
     void Start()
     {
         ballRigidbody = GetComponent<Rigidbody>();
-        ballRigidbody.AddForce(right * speed);
+        ballRigidbody.velocity = startDir * speed;
     }
 
     // Update is called once per frame
@@ -30,10 +32,12 @@ public class BallController : MonoBehaviour
             if (Math.Round(normalized.z) == 1) dir = left;
             else dir = right;
 
-            ballRigidbody.velocity = Vector3.zero;
+            ballRigidbody.velocity = dir * speed;
             ballRigidbody.angularVelocity = Vector3.zero;   // 각속도 벡터
 
-            ballRigidbody.AddForce(dir * speed);
+            // ballRigidbody.AddForce(dir * speed);
         }
+        transform.eulerAngles = Vector3.zero;
+        //Debug.Log("ff");
     }
 }
