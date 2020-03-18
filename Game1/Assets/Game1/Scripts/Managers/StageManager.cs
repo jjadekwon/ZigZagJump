@@ -13,36 +13,36 @@ public class StageManager : MonoBehaviour
     public int limitX = -3;
     public int limitZ = 3;
 
-    private float[,] dir = {{-1f, 0}, {0, 1f}};
+    private float[,] dirs = {{-1f, 0}, {0, 1f}};
     private Vector3 blockPosition = new Vector3(0, 0, 0);
 
     public void Init()
     {
         instance = this;
-        int d = Random.Range(0, 2);   // 0, 1
-        ballController.startDir = new Vector3(blockPosition.x + dir[d, 0], blockPosition.y, blockPosition.z + dir[d, 1]);
 
-        for (int i = 0; i < blockCount; i++) {
-            GameObject block = ObjectPoolContainer.Instance.Pop("Block");
-            block.SetActive(true);
-            block.transform.position = blockPosition;
+        int dirIdx = Random.Range(0, 2);   // 0, 1
 
+        // ball 시작 방향 설정
+        ballController.startDir = new Vector3(blockPosition.x + dirs[dirIdx, 0],
+                                              blockPosition.y,
+                                              blockPosition.z + dirs[dirIdx, 1]);
+
+        for (int i = 0; i < blockCount; i++)
+        {
             if (i < 4)
             {
-                blockPosition = new Vector3(blockPosition.x + dir[d, 0], blockPosition.y, blockPosition.z + dir[d, 1]);
+                GameObject block = ObjectPoolContainer.Instance.Pop("Block");
+                block.SetActive(true);
+                block.transform.position = blockPosition;
+                blockPosition = new Vector3(blockPosition.x + dirs[dirIdx, 0],
+                                            blockPosition.y,
+                                            blockPosition.z + dirs[dirIdx, 1]);
             }
             else
             {
-                //Debug.Log(blockPosition);
                 SpawnBlock();
-            }    
-
-
-
+            }
         }
-
-        
-                                    
     }
 
     public void SpawnBlock ()
@@ -51,28 +51,24 @@ public class StageManager : MonoBehaviour
         block.SetActive(true);
         block.transform.position = blockPosition;
 
-        int idx = Random.Range(0, 2);   // 0, 1
-
-        float nextX = blockPosition.x + dir[idx, 0];
-        float nextZ = blockPosition.z + dir[idx, 1];
-
-        if (nextX + nextZ < limitX || nextX + nextZ > limitZ) {
-            if (idx == 0) idx = 1;
-            else idx = 0;
-            blockPosition = new Vector3(blockPosition.x + dir[idx, 0],
-                                        blockPosition.y,
-                                        blockPosition.z + dir[idx, 1]);
+        int idx = 0;
+        if (blockPosition.x + blockPosition.z - 1 < limitX) {
+            idx = 1;
+        }
+        else if (blockPosition.x + blockPosition.z + 1 > limitZ) {
+            idx = 0;
         }
         else {
-            blockPosition = new Vector3(nextX,
-                                        blockPosition.y,
-                                        nextZ);
+            idx = Random.Range(0, 2);   // 0, 1
         }
+
+        blockPosition = new Vector3(blockPosition.x + dirs[idx, 0], 
+                                    blockPosition.y,
+                                    blockPosition.z + dirs[idx, 1]);
     }
 
     void OnDestroy ()
     {
         instance = null;
     }
-    
 }
