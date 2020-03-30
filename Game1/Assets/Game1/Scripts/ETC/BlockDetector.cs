@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BlockDetector : MonoBehaviour
 {
-
     void OnTriggerEnter (Collider col)
     {
         if (col.CompareTag("Block"))
@@ -12,9 +11,6 @@ public class BlockDetector : MonoBehaviour
             col.gameObject.SetActive(false);
             ObjectPoolContainer.Instance.Return(col.gameObject);
             StageManager.instance.SpawnBlock();
-
         }
-
     }
-    
 }
