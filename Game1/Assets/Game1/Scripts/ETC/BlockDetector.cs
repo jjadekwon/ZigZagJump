@@ -6,7 +6,7 @@ public class BlockDetector : MonoBehaviour
 {
     void OnTriggerEnter (Collider col)
     {
-        if (col.CompareTag("Block"))
+        if (col.CompareTag("Block") || col.CompareTag("Item"))
         {
             col.gameObject.SetActive(false);
             ObjectPoolContainer.Instance.Return(col.gameObject);

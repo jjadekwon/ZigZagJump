@@ -24,6 +24,7 @@ public class ObjectPoolContainer : MonoBehaviour
     // 누가, 무엇을, 몇개를 저장했는지 알 수 있는 변수
     Dictionary<string, List<GameObject>> poolDic = new Dictionary<string, List<GameObject>>();
 
+    // 게임 오브젝트 생성
     public void Create (string poolName, GameObject poolObj, int createCount)
     {
         List<GameObject> poolList = new List<GameObject>();
@@ -37,6 +38,7 @@ public class ObjectPoolContainer : MonoBehaviour
         poolDic.Add(poolName, poolList);
     }
 
+    // 헤당 게임 오브젝트 리스트에서 삭제 후 반환
     public GameObject Pop (string poolName)
     {
         GameObject returnObj;
@@ -55,6 +57,7 @@ public class ObjectPoolContainer : MonoBehaviour
         return returnObj;
     }
 
+    // 리스트에 게임 오브젝트 추가
     public void Return (GameObject obj)
     {
         List<GameObject> poolList = poolDic[obj.name];
